@@ -1,0 +1,21 @@
+# eBook Store — .gitignore
+node_modules/
+.next/
+.env
+.env.local
+.DS_Store
+*.log
+dist/
+build/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.turbo/
+coverage/
+.coverage
