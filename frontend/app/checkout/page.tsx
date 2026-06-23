@@ -29,13 +29,11 @@ type FormData = z.infer<typeof schema>;
 
 declare global {
   interface Window {
-    Cashfree: {
-      load: (config: { mode: string }) => Promise<{
-        checkout: (options: {
-          paymentSessionId: string;
-          redirectTarget?: string;
-        }) => Promise<{ error?: { message: string }; redirect?: boolean }>;
-      }>;
+    Cashfree: (config: { mode: string }) => {
+      checkout: (options: {
+        paymentSessionId: string;
+        redirectTarget?: string;
+      }) => Promise<{ error?: { message: string }; redirect?: boolean }>;
     };
   }
 }
@@ -92,13 +90,13 @@ function CheckoutContent() {
       });
 
       // Initialize Cashfree SDK v3
-      const CashfreeSDK = (window as unknown as { Cashfree: typeof window.Cashfree }).Cashfree;
+      const CashfreeSDK = (window as any).Cashfree;
       if (!CashfreeSDK) {
         throw new Error("Cashfree SDK not loaded. Please refresh the page.");
       }
 
       const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "sandbox";
-      const cashfree = await CashfreeSDK.load({ mode: env });
+      const cashfree = CashfreeSDK({ mode: env });
 
       const result = await cashfree.checkout({
         paymentSessionId: orderResult.payment_session_id,

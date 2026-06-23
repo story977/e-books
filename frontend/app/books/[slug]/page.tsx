@@ -167,6 +167,24 @@ export default async function BookDetailPage({ params }: Props) {
                     </Button>
                   </Link>
 
+                  {book.hard_copy_url && (
+                    <Link
+                      href={book.hard_copy_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block mt-3"
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full rounded-xl py-6 text-base font-semibold border-2 hover:bg-muted"
+                        size="lg"
+                      >
+                        <BookOpen className="w-5 h-5 mr-2" />
+                        Buy as Hard Copy
+                      </Button>
+                    </Link>
+                  )}
+
                   <div className="space-y-2.5 pt-2">
                     {[
                       { icon: Download, text: "Instant PDF download" },

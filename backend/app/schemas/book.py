@@ -48,6 +48,7 @@ class BookResponse(BaseModel):
     category: str
     slug: str
     cover_url: str
+    hard_copy_url: Optional[str] = None
     created_at: datetime
     rating: Optional[float] = None  # average star rating (1.0–5.0), None if unrated
     rating_count: int = 0            # total number of ratings

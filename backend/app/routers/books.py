@@ -36,6 +36,7 @@ def book_doc_to_response(doc: dict) -> dict:
         "category": doc["category"],
         "slug": doc["slug"],
         "cover_url": doc["cover_url"],
+        "hard_copy_url": doc.get("hard_copy_url"),
         "created_at": doc["created_at"],
         "rating": doc.get("rating"),
         "rating_count": doc.get("rating_count", 0),
@@ -106,6 +107,7 @@ async def create_book(
     description: str = Form(..., min_length=10, max_length=5000),
     price: float = Form(..., gt=0, le=100000),
     category: str = Form(...),
+    hard_copy_url: Optional[str] = Form(None),
     cover_image: UploadFile = File(...),
     pdf_file: UploadFile = File(...),
     _: dict = Depends(verify_admin_token),
@@ -137,6 +139,7 @@ async def create_book(
         "slug": slug,
         "cover_url": cover_url,
         "pdf_public_id": pdf_public_id,
+        "hard_copy_url": hard_copy_url,
         "created_at": now,
         "updated_at": now,
     }
@@ -156,6 +159,7 @@ async def update_book(
     description: Optional[str] = Form(None),
     price: Optional[float] = Form(None),
     category: Optional[str] = Form(None),
+    hard_copy_url: Optional[str] = Form(None),
     cover_image: Optional[UploadFile] = File(None),
     pdf_file: Optional[UploadFile] = File(None),
     _: dict = Depends(verify_admin_token),
@@ -183,6 +187,8 @@ async def update_book(
         if category not in VALID_CATEGORIES:
             raise HTTPException(400, f"Invalid category")
         updates["category"] = category
+    if hard_copy_url is not None:
+        updates["hard_copy_url"] = hard_copy_url if hard_copy_url.strip() else None
 
     slug = existing["slug"]
 

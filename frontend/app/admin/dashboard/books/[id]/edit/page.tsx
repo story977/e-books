@@ -26,6 +26,7 @@ interface EditFormState {
   description: string;
   price: string;
   category: string;
+  hard_copy_url: string;
 }
 
 export default function EditBookPage() {
@@ -42,6 +43,7 @@ export default function EditBookPage() {
     description: "",
     price: "",
     category: "",
+    hard_copy_url: "",
   });
 
   useEffect(() => {
@@ -53,6 +55,7 @@ export default function EditBookPage() {
           description: book.description,
           price: String(book.price),
           category: book.category,
+          hard_copy_url: book.hard_copy_url || "",
         });
       })
       .catch(() => toast.error("Failed to load book"))
@@ -75,6 +78,7 @@ export default function EditBookPage() {
       if (form.description) formData.append("description", form.description);
       if (form.price) formData.append("price", form.price);
       if (form.category) formData.append("category", form.category);
+      if (form.hard_copy_url !== undefined) formData.append("hard_copy_url", form.hard_copy_url.trim());
       if (coverFile) formData.append("cover_image", coverFile);
       if (pdfFile) formData.append("pdf_file", pdfFile);
 
@@ -153,6 +157,16 @@ export default function EditBookPage() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="col-span-2 space-y-2">
+                <Label htmlFor="hard_copy_url">Hard Copy URL (Optional)</Label>
+                <Input
+                  id="hard_copy_url"
+                  value={form.hard_copy_url}
+                  onChange={(e) => handleChange("hard_copy_url", e.target.value)}
+                  placeholder="e.g. https://store.pothi.com/book/..."
+                  className="rounded-xl"
+                />
               </div>
               <div className="col-span-2 space-y-2">
                 <Label htmlFor="description">Description</Label>

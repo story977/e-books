@@ -11,6 +11,7 @@ export interface Book {
   category: string;
   slug: string;
   cover_url: string;
+  hard_copy_url?: string;
   created_at: string;
   rating?: number;       // average (1.0–5.0), undefined if unrated
   rating_count?: number; // total ratings

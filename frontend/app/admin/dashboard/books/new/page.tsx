@@ -26,6 +26,7 @@ interface NewBookForm {
   description: string;
   price: string;
   category: string;
+  hard_copy_url: string;
 }
 
 export default function NewBookPage() {
@@ -39,6 +40,7 @@ export default function NewBookPage() {
     description: "",
     price: "",
     category: "",
+    hard_copy_url: "",
   });
   const [errors, setErrors] = useState<Partial<NewBookForm & { cover: string; pdf: string }>>({});
 
@@ -77,6 +79,9 @@ export default function NewBookPage() {
       formData.append("description", form.description);
       formData.append("price", form.price);
       formData.append("category", form.category);
+      if (form.hard_copy_url.trim()) {
+        formData.append("hard_copy_url", form.hard_copy_url.trim());
+      }
       formData.append("cover_image", coverFile!);
       formData.append("pdf_file", pdfFile!);
 
@@ -165,6 +170,17 @@ export default function NewBookPage() {
                   </SelectContent>
                 </Select>
                 {errors.category && <p className="text-destructive text-xs">{errors.category}</p>}
+              </div>
+
+              <div className="col-span-2 space-y-2">
+                <Label htmlFor="hard_copy_url">Hard Copy URL (Optional)</Label>
+                <Input
+                  id="hard_copy_url"
+                  value={form.hard_copy_url}
+                  onChange={(e) => handleChange("hard_copy_url", e.target.value)}
+                  placeholder="e.g. https://store.pothi.com/book/..."
+                  className="rounded-xl"
+                />
               </div>
 
               <div className="col-span-2 space-y-2">
