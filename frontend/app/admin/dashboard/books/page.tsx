@@ -31,13 +31,14 @@ export default function AdminBooksPage() {
     try {
       const data = await fetchBooks({ limit: 50 });
       setBooks(data.books);
-    } catch (e) {
+    } catch (_e) {
       toast.error("Failed to load books");
     } finally {
       setLoading(false);
     }
   };
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadBooks(); }, []);
 
   const handleDelete = async (id: string, title: string) => {

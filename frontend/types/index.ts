@@ -12,6 +12,8 @@ export interface Book {
   slug: string;
   cover_url: string;
   created_at: string;
+  rating?: number;       // average (1.0–5.0), undefined if unrated
+  rating_count?: number; // total ratings
 }
 
 export interface BookListResponse {
@@ -145,4 +147,16 @@ export interface Testimonial {
 export interface FAQItem {
   question: string;
   answer: string;
+}
+
+export interface RatingSubmitRequest {
+  book_id: string;
+  rating: number;
+  download_token: string;
+}
+
+export interface RatingResponse {
+  book_id: string;
+  average: number | null;
+  count: number;
 }

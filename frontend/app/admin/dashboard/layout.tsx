@@ -35,6 +35,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
     if (!token) {
       router.replace("/admin/login");
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAuthorized(true);
     }
   }, [router]);

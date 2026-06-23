@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { ShoppingCart, CheckCircle, Clock, XCircle, RefreshCw } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -54,7 +53,8 @@ export default function AdminOrdersPage() {
     }
   };
 
-  useEffect(() => { load(1, ""); }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { load(1, ""); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleStatusFilter = (val: string) => {
     const s = val === "ALL" ? "" : val;
@@ -70,7 +70,7 @@ export default function AdminOrdersPage() {
           <p className="text-sm text-muted-foreground">{total} total orders</p>
         </div>
         <div className="flex items-center gap-3">
-          <Select onValueChange={(val: string | null) => val && handleStatusFilter(val)} defaultValue="ALL">
+          <Select onValueChange={(val) => val && handleStatusFilter(val)} defaultValue="ALL">
             <SelectTrigger className="w-36 rounded-xl" id="status-filter">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
@@ -107,15 +107,17 @@ export default function AdminOrdersPage() {
           </TableHeader>
           <TableBody>
             {loading ? (
-              [...Array(5)].map((_, i) => (
-                <TableRow key={i}>
-                  {[...Array(6)].map((_, j) => (
-                    <TableCell key={j}>
-                      <div className="h-4 animate-shimmer rounded w-20" />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              <>
+                {[...Array(5)].map((_, i) => (
+                  <TableRow key={i}>
+                    {[...Array(6)].map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="h-4 animate-shimmer rounded w-20" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
             ) : orders.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-16 text-muted-foreground">

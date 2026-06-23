@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone, ExternalLink, Share2, Link2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { CATEGORIES } from "@/types";
+
 
 const footerLinks = {
 

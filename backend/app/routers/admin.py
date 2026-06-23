@@ -41,7 +41,7 @@ async def admin_login(body: AdminLoginRequest):
 async def list_orders(
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100),
-    status: str = Query(None, regex="^(PENDING|SUCCESS|FAILED|CANCELLED)?$"),
+    status: str = Query(None, pattern="^(PENDING|SUCCESS|FAILED|CANCELLED)?$"),
     _: dict = Depends(verify_admin_token),
 ):
     """List all orders with pagination and optional status filter. Admin only."""

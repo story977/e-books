@@ -34,8 +34,8 @@ export function ContactForm() {
       await submitContactForm(form);
       toast.success("Message sent successfully! We will get back to you soon.");
       setForm({ name: "", email: "", subject: "", message: "" });
-    } catch (error: any) {
-      toast.error(error.message || "Failed to send message. Please try again later.");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to send message. Please try again later.");
     } finally {
       setLoading(false);
     }

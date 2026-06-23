@@ -49,6 +49,8 @@ class BookResponse(BaseModel):
     slug: str
     cover_url: str
     created_at: datetime
+    rating: Optional[float] = None  # average star rating (1.0–5.0), None if unrated
+    rating_count: int = 0            # total number of ratings
 
     model_config = {"from_attributes": True}
 

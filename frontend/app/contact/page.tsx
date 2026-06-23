@@ -1,10 +1,5 @@
 import { Metadata } from "next";
-import Link from "next/link";
-import { Mail, MessageSquare, Phone, MapPin, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -28,7 +23,7 @@ const contactInfo = [
     icon: Phone,
     title: "Phone",
     value: "+91 63803 94753",
-    desc: "Mon–Fri, 9 AM – 6 PM IST",
+    desc: "Mon–Fri, 9 AM – 6 PM",
     href: "tel:+916380394753",
   },
   {
@@ -99,14 +94,17 @@ export default function ContactPage() {
                   <h3 className="font-semibold mb-2">Download Issues?</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     If your download link expired or you&apos;re facing any issues
-                    with your purchase, email us with your order ID and we&apos;ll
+                    with your purchase, email us with your Name, mobile number and we&apos;ll
                     sort it out quickly.
                   </p>
-                  <a href="mailto:srik13225@gmail.com">
-                    <Button variant="outline" size="sm" className="rounded-lg">
-                      <Mail className="w-3.5 h-3.5 mr-1.5" />
-                      Email Support
-                    </Button>
+                  <a
+                    href="https://mail.google.com/mail/?view=cm&to=srik13225@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-[0.8rem] font-medium transition-colors hover:bg-muted"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    Email Support
                   </a>
                 </CardContent>
               </Card>

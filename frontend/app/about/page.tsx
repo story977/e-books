@@ -1,12 +1,10 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Sparkles,
   Shield,
   Zap,
   Heart,
-  Star,
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

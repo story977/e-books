@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,11 +14,13 @@ interface BookCardProps {
 }
 
 export function BookCard({ book, priority = false }: BookCardProps) {
+
   const formattedPrice = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     minimumFractionDigits: 0,
   }).format(book.price);
+
 
   return (
     <Card className="group card-hover overflow-hidden border-border/60 bg-card">
@@ -64,14 +68,6 @@ export function BookCard({ book, priority = false }: BookCardProps) {
 
         <div className="flex items-center justify-between">
           <span className="font-bold text-primary text-base">{formattedPrice}</span>
-          <div className="flex items-center gap-0.5">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3 h-3 ${i < 4 ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`}
-              />
-            ))}
-          </div>
         </div>
       </CardContent>
     </Card>

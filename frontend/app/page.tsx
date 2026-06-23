@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, Download, Shield, Star, Zap } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -16,60 +15,12 @@ import { Footer } from "@/components/layout/Footer";
 import { Separator } from "@/components/ui/separator";
 import { BookCard } from "@/components/books/BookCard";
 import { fetchBooks } from "@/lib/api";
-import { CATEGORIES } from "@/types";
 
 export const metadata: Metadata = {
   title: "eBook Store — Premium Digital Books",
   description:
     "Discover and instantly download premium digital eBooks on programming, self-help, business, science and more. Secure payment via Cashfree. Instant PDF delivery.",
 };
-
-const features = [
-  {
-    icon: Zap,
-    title: "Instant Download",
-    desc: "Get your eBook immediately after payment. No waiting.",
-  },
-  {
-    icon: Shield,
-    title: "Secure Payment",
-    desc: "Pay safely via Cashfree. Your data is encrypted.",
-  },
-  {
-    icon: Download,
-    title: "Lifetime Access",
-    desc: "Download anytime. Your purchase link is always available.",
-  },
-  {
-    icon: BookOpen,
-    title: "Premium Quality",
-    desc: "Curated books from expert authors and publishers.",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Ravi Kumar",
-    role: "Full Stack Developer",
-    content:
-      "The programming books here are absolutely top-notch. Got my React guide and it paid off within a week!",
-    rating: 5,
-  },
-  {
-    name: "Priya Sharma",
-    role: "Entrepreneur",
-    content:
-      "Super easy checkout and instant download. The business strategy book was exactly what I needed.",
-    rating: 5,
-  },
-  {
-    name: "Arjun Mehta",
-    role: "Data Scientist",
-    content:
-      "Found rare ML books I couldn't get anywhere else. The secure download system is brilliant.",
-    rating: 4,
-  },
-];
 
 const faqs = [
   {
@@ -90,7 +41,7 @@ const faqs = [
   },
   {
     q: "What if the download link expires?",
-    a: "Contact us at support@ebookstore.com with your order details and we'll issue a new download link.",
+    a: "Contact us at srik13225@gmail.com with your Name, mobile number, order details and we'll issue a new download link.",
   },
   {
     q: "Is there a refund policy?",

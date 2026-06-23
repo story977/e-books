@@ -42,6 +42,12 @@ async def _create_indexes() -> None:
     # Download tokens index (TTL — auto-expire after 10 min)
     await db["download_tokens"].create_index("created_at", expireAfterSeconds=600)
 
+    # Ratings indexes
+    await db["ratings"].create_index("book_id")
+    await db["ratings"].create_index(
+        [("book_id", 1), ("order_id", 1)], unique=True
+    )  # one rating per purchase
+
     logger.info("MongoDB indexes created successfully")
 
 
@@ -72,3 +78,7 @@ def get_tokens_collection():
 
 def get_contacts_collection():
     return get_database()["contacts"]
+
+
+def get_ratings_collection():
+    return get_database()["ratings"]

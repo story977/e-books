@@ -1,18 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Search, SlidersHorizontal, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useSearchParams } from "next/navigation";
+import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { BookCard } from "@/components/books/BookCard";
 import { fetchBooks } from "@/lib/api";
 import type { Book } from "@/types";
 import { CATEGORIES } from "@/types";
 
 export function BooksPageContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [books, setBooks] = useState<Book[]>([]);
   const [total, setTotal] = useState(0);
@@ -44,6 +41,7 @@ export function BooksPageContent() {
   }, [category, search]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadBooks(1, true);
   }, [loadBooks]);
 

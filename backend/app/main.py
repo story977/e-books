@@ -9,7 +9,7 @@ import logging
 
 from app.config import settings
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routers import books, payment, download, admin, webhook, contact
+from app.routers import books, payment, download, admin, webhook, contact, ratings
 
 # Configure logging
 logging.basicConfig(
@@ -48,7 +48,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=settings.get_allowed_origins(),
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-Requested-With"],
@@ -62,6 +62,7 @@ app.include_router(download.router, prefix="/download", tags=["Download"])
 app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 app.include_router(webhook.router, prefix="/webhook", tags=["Webhooks"])
 app.include_router(contact.router, prefix="/contact", tags=["Contact"])
+app.include_router(ratings.router, prefix="/ratings", tags=["Ratings"])
 
 
 @app.get("/health", tags=["Health"])

@@ -112,7 +112,11 @@ async def verify_payment(request: Request, body: VerifyPaymentRequest):
     """
     orders_col = get_orders_collection()
 
-    order = await orders_col.find_one({"cashfree_order_id": body.cashfree_order_id})
+    # With Cashfree v3 redirect, order_id in return_url is our internal order_id.
+    # Try lookup by internal_order_id first, then fall back to cashfree_order_id (CF's id).
+    order = await orders_col.find_one({"internal_order_id": body.cashfree_order_id})
+    if not order:
+        order = await orders_col.find_one({"cashfree_order_id": body.cashfree_order_id})
     if not order:
         raise HTTPException(404, "Order not found")
 
@@ -124,8 +128,11 @@ async def verify_payment(request: Request, body: VerifyPaymentRequest):
             message="Payment already verified",
         )
 
-    # Fetch real-time status from Cashfree
-    cf_status = await get_order_status(body.cashfree_order_id)
+    # Fetch real-time status from Cashfree using our internal order ID
+    internal_order_id = order.get("internal_order_id")
+    if not internal_order_id:
+        raise HTTPException(500, "Order missing internal ID")
+    cf_status = await get_order_status(internal_order_id)
     payment_status = cf_status.get("order_status", "FAILED").upper()
 
     if payment_status == "PAID":
@@ -163,3 +170,58 @@ async def verify_payment(request: Request, body: VerifyPaymentRequest):
             success=False,
             message=f"Payment {payment_status.lower()}. Please try again.",
         )
+
+
+@router.post("/test-bypass", response_model=VerifyPaymentResponse)
+async def test_bypass_payment(request: Request, body: dict):
+    """DEV/SANDBOX ONLY — skip Cashfree and get a real download token instantly.
+
+    Body: { "book_id": "<mongo_id>" }
+    Returns a VerifyPaymentResponse with a valid download_token.
+    Blocked in production.
+    """
+    if settings.CASHFREE_ENV == "production":
+        raise HTTPException(403, "Test bypass is not available in production")
+
+    book_id = body.get("book_id")
+    if not book_id or not ObjectId.is_valid(book_id):
+        raise HTTPException(400, "Invalid book_id")
+
+    books_col = get_books_collection()
+    book = await books_col.find_one({"_id": ObjectId(book_id)})
+    if not book:
+        raise HTTPException(404, "Book not found")
+
+    orders_col = get_orders_collection()
+    now = datetime.now(timezone.utc)
+
+    # Create a fake SUCCESS order
+    order_doc = {
+        "book_id": book_id,
+        "buyer_name": "Test User",
+        "buyer_email": "test@test.com",
+        "buyer_phone": "9999999999",
+        "amount": book["price"],
+        "payment_status": "SUCCESS",
+        "cashfree_order_id": f"TEST-{book_id[:8]}",
+        "transaction_id": "TEST-TXN",
+        "created_at": now,
+        "updated_at": now,
+    }
+    result = await orders_col.insert_one(order_doc)
+    order_id = str(result.inserted_id)
+
+    download_token = generate_download_token(book_id=book_id, order_id=order_id)
+
+    # Store token on order
+    await orders_col.update_one(
+        {"_id": result.inserted_id},
+        {"$set": {"download_token": download_token}},
+    )
+
+    logger.info(f"[TEST] Bypass payment for book={book['title']}")
+    return VerifyPaymentResponse(
+        success=True,
+        download_token=download_token,
+        message=f"[TEST] Payment bypassed for: {book['title']}",
+    )

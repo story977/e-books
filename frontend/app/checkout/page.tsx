@@ -30,12 +30,12 @@ type FormData = z.infer<typeof schema>;
 declare global {
   interface Window {
     Cashfree: {
-      PGCheckout: (props: {
-        orderToken: string;
-        onSuccess: (data: unknown) => void;
-        onFailure: (data: unknown) => void;
-        onDismiss: () => void;
-      }) => void;
+      load: (config: { mode: string }) => Promise<{
+        checkout: (options: {
+          paymentSessionId: string;
+          redirectTarget?: string;
+        }) => Promise<{ error?: { message: string }; redirect?: boolean }>;
+      }>;
     };
   }
 }
@@ -63,13 +63,12 @@ function CheckoutContent() {
     }
   }, [bookId, router]);
 
-  // Load Cashfree SDK
+  // Load Cashfree SDK v3
   useEffect(() => {
     const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "sandbox";
-    const sdkUrl =
-      env === "production"
-        ? "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.prod.js"
-        : "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js";
+    const sdkUrl = env === "production"
+      ? "https://sdk.cashfree.com/js/v3/cashfree.js"
+      : "https://sdk.cashfree.com/js/v3/cashfree.js"; // same URL, mode differs at runtime
 
     if (!document.getElementById("cashfree-sdk")) {
       const script = document.createElement("script");
@@ -92,35 +91,31 @@ function CheckoutContent() {
         buyer_phone: data.buyer_phone,
       });
 
-      // Launch Cashfree payment modal
-      const cashfree = (window as unknown as { Cashfree: { PGCheckout: Function } }).Cashfree;
-      if (!cashfree) {
-        throw new Error("Cashfree SDK not loaded. Please refresh.");
+      // Initialize Cashfree SDK v3
+      const CashfreeSDK = (window as unknown as { Cashfree: typeof window.Cashfree }).Cashfree;
+      if (!CashfreeSDK) {
+        throw new Error("Cashfree SDK not loaded. Please refresh the page.");
       }
 
-      cashfree.PGCheckout({
-        orderToken: orderResult.payment_session_id,
-        onSuccess: (data: unknown) => {
-          const d = data as { order: { orderId: string }; transaction: { transactionId: string }; signature: string };
-          router.push(
-            `/payment-success?cashfree_order_id=${d.order?.orderId}&cashfree_payment_id=${d.transaction?.transactionId}&cashfree_signature=${d.signature || ""}`
-          );
-        },
-        onFailure: (data: unknown) => {
-          toast.error("Payment failed. Please try again.");
-          console.error("Payment failed:", data);
-          setLoading(false);
-        },
-        onDismiss: () => {
-          toast.info("Payment cancelled");
-          setLoading(false);
-        },
+      const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "sandbox";
+      const cashfree = await CashfreeSDK.load({ mode: env });
+
+      const result = await cashfree.checkout({
+        paymentSessionId: orderResult.payment_session_id,
+        redirectTarget: "_self", // redirect in the same tab
       });
+
+      if (result?.error) {
+        throw new Error(result.error.message || "Payment failed. Please try again.");
+      }
+      // If redirect happened, this code won't execute.
+      // On return from Cashfree, the return_url (payment-success) handles verification.
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Failed to create order");
+      toast.error(err instanceof Error ? err.message : "Failed to initiate payment");
       setLoading(false);
     }
   };
+
 
   const formattedPrice = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -283,6 +278,8 @@ function CheckoutContent() {
                     By paying, you agree to our{" "}
                     <a href="/terms" className="underline">Terms</a>
                   </p>
+
+
                 </CardContent>
               </Card>
             </div>

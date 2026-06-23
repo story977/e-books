@@ -44,8 +44,8 @@ async def create_cashfree_order(
             "customer_phone": buyer_phone,
         },
         "order_meta": {
-            "return_url": f"{return_url}?order_id={{order_id}}",
-            "notify_url": f"{settings.APP_URL}/webhook/cashfree",
+            "return_url": f"{return_url}?order_id={{order_id}}".replace("http://localhost", "https://localhost").replace("http://127.0.0.1", "https://127.0.0.1"),
+            "notify_url": f"{settings.APP_URL}/webhook/cashfree".replace("http://localhost", "https://localhost").replace("http://127.0.0.1", "https://127.0.0.1"),
         },
         "order_expiry_time": _get_order_expiry(),
     }
@@ -91,20 +91,22 @@ def verify_webhook_signature(raw_body: bytes, received_signature: str) -> bool:
     
     Cashfree signs: timestamp.rawBody using SECRET_KEY
     """
+    import base64
     try:
         computed = hmac.new(
             settings.CASHFREE_SECRET_KEY.encode("utf-8"),
             raw_body,
             hashlib.sha256,
-        ).hexdigest()
-        return hmac.compare_digest(computed, received_signature)
+        ).digest()
+        computed_b64 = base64.b64encode(computed).decode('utf-8')
+        return hmac.compare_digest(computed_b64, received_signature)
     except Exception as e:
         logger.error(f"Webhook signature verification error: {e}")
         return False
 
 
 def _get_order_expiry() -> str:
-    """Return ISO 8601 timestamp 30 minutes from now."""
+    """Return ISO 8601 timestamp 30 minutes from now (in UTC, formatted for Cashfree)."""
     from datetime import datetime, timezone, timedelta
     expiry = datetime.now(timezone.utc) + timedelta(minutes=30)
-    return expiry.strftime("%Y-%m-%dT%H:%M:%S+05:30")
+    return expiry.strftime("%Y-%m-%dT%H:%M:%S+00:00")

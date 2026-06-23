@@ -37,12 +37,18 @@ async function request<T>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+    cache: "no-store",
     ...options,
   });
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Request failed" }));
     throw new APIError(res.status, error.detail || "Request failed");
+  }
+
+  // 204 No Content — no body to parse
+  if (res.status === 204) {
+    return undefined as T;
   }
 
   return res.json() as Promise<T>;
@@ -186,16 +192,48 @@ export async function submitContactForm(data: {
   });
 }
 
-export async function fetchAdminMessages(token: string, page = 1, limit = 20): Promise<any> {
-  return request<any>(`/contact?page=${page}&limit=${limit}`, {
+export async function fetchAdminMessages(token: string, page = 1, limit = 20): Promise<import("@/types").ContactMessageListResponse> {
+  return request<import("@/types").ContactMessageListResponse>(`/contact?page=${page}&limit=${limit}`, {
     headers: authHeader(token),
   });
 }
 
-export async function markMessageRead(messageId: string, token: string): Promise<any> {
-  return request<any>(`/contact/${messageId}/read`, {
+export async function markMessageRead(messageId: string, token: string): Promise<import("@/types").ContactMessage> {
+  return request<import("@/types").ContactMessage>(`/contact/${messageId}/read`, {
     method: "PUT",
     headers: authHeader(token),
+  });
+}
+
+// =============================================================================
+// Rating APIs
+// =============================================================================
+
+export async function submitRating(data: {
+  book_id: string;
+  rating: number;
+  download_token: string;
+}): Promise<{ book_id: string; average: number | null; count: number }> {
+  return request("/ratings", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function fetchBookRating(bookId: string): Promise<{ book_id: string; average: number | null; count: number }> {
+  return request(`/ratings/${bookId}`);
+}
+
+// =============================================================================
+// Dev / Test helpers (sandbox only — blocked in production by backend)
+// =============================================================================
+
+export async function testBypassPayment(
+  bookId: string
+): Promise<{ success: boolean; download_token?: string; message: string }> {
+  return request("/payment/test-bypass", {
+    method: "POST",
+    body: JSON.stringify({ book_id: bookId }),
   });
 }
 

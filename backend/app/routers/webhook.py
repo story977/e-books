@@ -61,7 +61,12 @@ async def cashfree_webhook(
         return {"status": "ignored", "reason": "no order_id"}
 
     orders_col = get_orders_collection()
-    order = await orders_col.find_one({"cashfree_order_id": cf_order_id})
+    order = await orders_col.find_one({
+        "$or": [
+            {"internal_order_id": cf_order_id},
+            {"cashfree_order_id": cf_order_id}
+        ]
+    })
     if not order:
         logger.warning(f"Webhook: order not found for cf_order_id={cf_order_id}")
         return {"status": "ignored"}

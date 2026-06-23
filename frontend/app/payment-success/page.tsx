@@ -21,7 +21,11 @@ import { verifyPayment } from "@/lib/api";
 function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const cashfreeOrderId = searchParams.get("cashfree_order_id") || "";
+  // Cashfree v3 redirect sends `order_id`; older flow sent `cashfree_order_id`
+  const cashfreeOrderId =
+    searchParams.get("order_id") ||
+    searchParams.get("cashfree_order_id") ||
+    "";
   const cashfreePaymentId = searchParams.get("cashfree_payment_id") || "";
   const cashfreeSignature = searchParams.get("cashfree_signature") || "";
 
@@ -29,6 +33,7 @@ function PaymentSuccessContent() {
   const [downloadToken, setDownloadToken] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [countdown, setCountdown] = useState(600); // 10 minutes
+
 
   useEffect(() => {
     if (!cashfreeOrderId) {
@@ -53,14 +58,14 @@ function PaymentSuccessContent() {
           setStatus("failed");
           setMessage(result.message);
         }
-      } catch (err) {
+      } catch {
         setStatus("failed");
         setMessage("Failed to verify payment. Contact support.");
       }
     };
 
     verify();
-  }, [cashfreeOrderId, cashfreePaymentId, cashfreeSignature]);
+  }, [cashfreeOrderId, cashfreePaymentId, cashfreeSignature, router]);
 
   // Countdown timer for download link expiry
   useEffect(() => {
@@ -85,6 +90,7 @@ function PaymentSuccessContent() {
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+
   return (
     <main className="pt-24 pb-20 min-h-screen flex items-center">
       <div className="container-max section-padding max-w-lg mx-auto w-full">
@@ -101,50 +107,54 @@ function PaymentSuccessContent() {
         )}
 
         {status === "success" && downloadToken && (
-          <Card className="border-green-500/30 bg-green-500/5 text-center">
-            <CardContent className="py-12 px-8">
-              <div className="w-20 h-20 rounded-full bg-green-500/15 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 className="w-10 h-10 text-green-500" />
-              </div>
-              <h1 className="text-2xl font-bold mb-2">Payment Successful! 🎉</h1>
-              <p className="text-muted-foreground mb-8">{message}</p>
-
-              {/* Countdown */}
-              {countdown > 0 ? (
-                <div className="flex items-center justify-center gap-2 text-sm text-amber-500 mb-6 bg-amber-500/10 rounded-xl py-3 px-4">
-                  <Clock className="w-4 h-4" />
-                  <span>Download link expires in: <strong>{formatTime(countdown)}</strong></span>
+          <div className="flex flex-col gap-4">
+            <Card className="border-green-500/30 bg-green-500/5 text-center">
+              <CardContent className="py-12 px-8">
+                <div className="w-20 h-20 rounded-full bg-green-500/15 flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 className="w-10 h-10 text-green-500" />
                 </div>
-              ) : (
-                <div className="flex items-center justify-center gap-2 text-sm text-destructive mb-6 bg-destructive/10 rounded-xl py-3 px-4">
-                  <AlertTriangle className="w-4 h-4" />
-                  <span>Link expired. Contact support for a new link.</span>
-                </div>
-              )}
+                <h1 className="text-2xl font-bold mb-2">Payment Successful! 🎉</h1>
+                <p className="text-muted-foreground mb-8">{message}</p>
 
-              <a
-                href={`${API_URL}/download/${downloadToken}`}
-                id="download-book-btn"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  size="lg"
-                  disabled={countdown === 0}
-                  className="w-full brand-gradient text-white border-0 rounded-xl glow py-6 text-base mb-4"
+                {/* Countdown */}
+                {countdown > 0 ? (
+                  <div className="flex items-center justify-center gap-2 text-sm text-amber-500 mb-6 bg-amber-500/10 rounded-xl py-3 px-4">
+                    <Clock className="w-4 h-4" />
+                    <span>Download link expires in: <strong>{formatTime(countdown)}</strong></span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2 text-sm text-destructive mb-6 bg-destructive/10 rounded-xl py-3 px-4">
+                    <AlertTriangle className="w-4 h-4" />
+                    <span>Link expired. Contact support for a new link.</span>
+                  </div>
+                )}
+
+                <a
+                  href={`${API_URL}/download/${downloadToken}`}
+                  id="download-book-btn"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <Download className="w-5 h-5 mr-2" />
-                  Download Your eBook
-                </Button>
-              </a>
+                  <Button
+                    size="lg"
+                    disabled={countdown === 0}
+                    className="w-full brand-gradient text-white border-0 rounded-xl glow py-6 text-base mb-4"
+                  >
+                    <Download className="w-5 h-5 mr-2" />
+                    Download Your eBook
+                  </Button>
+                </a>
 
-              <p className="text-xs text-muted-foreground">
-                Having issues?{" "}
-                <Link href="/contact" className="text-primary underline">
-                  Contact support
-                </Link>
-              </p>
-            </CardContent>
-          </Card>
+                <p className="text-xs text-muted-foreground">
+                  Having issues?{" "}
+                  <Link href="/contact" className="text-primary underline">
+                    Contact support
+                  </Link>
+                </p>
+              </CardContent>
+            </Card>
+
+          </div>
         )}
 
         {status === "failed" && (

@@ -37,6 +37,8 @@ def book_doc_to_response(doc: dict) -> dict:
         "slug": doc["slug"],
         "cover_url": doc["cover_url"],
         "created_at": doc["created_at"],
+        "rating": doc.get("rating"),
+        "rating_count": doc.get("rating_count", 0),
     }
 
 
@@ -48,8 +50,8 @@ async def list_books(
     limit: int = Query(12, ge=1, le=50),
     category: Optional[str] = Query(None),
     search: Optional[str] = Query(None, max_length=100),
-    sort: str = Query("created_at", regex="^(created_at|price|title)$"),
-    order: str = Query("desc", regex="^(asc|desc)$"),
+    sort: str = Query("created_at", pattern="^(created_at|price|title)$"),
+    order: str = Query("desc", pattern="^(asc|desc)$"),
 ):
     """List books with pagination, category filter, and full-text search."""
     collection = get_books_collection()

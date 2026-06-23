@@ -1,7 +1,6 @@
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
 from typing import List
-from functools import lru_cache
 
 
 class Settings(BaseSettings):
@@ -70,7 +69,6 @@ class Settings(BaseSettings):
         return "https://sandbox.cashfree.com/pg"
 
 
-@lru_cache()
 def get_settings() -> Settings:
     return Settings()
 

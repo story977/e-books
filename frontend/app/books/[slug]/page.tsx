@@ -7,7 +7,6 @@ import {
   BookOpen,
   Download,
   Shield,
-  Star,
   User,
   Tag,
 } from "lucide-react";
@@ -107,11 +106,7 @@ export default async function BookDetailPage({ params }: Props) {
           priceCurrency: "INR",
           availability: "https://schema.org/InStock",
         },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.8",
-          reviewCount: "24",
-        },
+
       },
     ],
   };
@@ -157,15 +152,6 @@ export default async function BookDetailPage({ params }: Props) {
                     {formattedPrice}
                   </div>
 
-                  <div className="flex gap-1 items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${i < 4 ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`}
-                      />
-                    ))}
-                    <span className="text-sm text-muted-foreground ml-1">4.8 (24 reviews)</span>
-                  </div>
 
                   <Link
                     href={`/checkout?book_id=${book.id}&title=${encodeURIComponent(book.title)}&price=${book.price}&cover=${encodeURIComponent(book.cover_url)}`}

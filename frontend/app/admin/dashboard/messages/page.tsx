@@ -21,13 +21,14 @@ export default function AdminMessagesPage() {
     try {
       const data = await fetchAdminMessages(token, 1, 50);
       setMessages(data.messages);
-    } catch (e) {
+    } catch (_e) {
       toast.error("Failed to load messages");
     } finally {
       setLoading(false);
     }
   };
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadMessages(); }, []);
 
   const handleMarkRead = async (id: string) => {
