@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import List
 from functools import lru_cache
 
@@ -28,14 +29,39 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str = "admin"
     ADMIN_PASSWORD_HASH: str = ""  # bcrypt hash of your admin password
 
-    # CORS — comma-separated origins
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+    # CORS — accepts JSON array OR comma-separated string
+    # e.g. in Render: https://yourapp.vercel.app,http://localhost:3000
+    ALLOWED_ORIGINS: str = "http://localhost:3000"
 
     # URLs
     APP_URL: str = "http://localhost:8000"
     FRONTEND_URL: str = "http://localhost:3000"
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_allowed_origins(cls, v):
+        """Accept JSON array, comma-separated string, or plain string."""
+        if isinstance(v, list):
+            return ",".join(v)
+        return str(v) if v else "http://localhost:3000"
+
+    def get_allowed_origins(self) -> List[str]:
+        """Return ALLOWED_ORIGINS as a list, parsing JSON or comma-separated."""
+        import json
+        raw = self.ALLOWED_ORIGINS.strip()
+        if not raw:
+            return ["http://localhost:3000"]
+        # Try JSON array first
+        try:
+            parsed = json.loads(raw)
+            if isinstance(parsed, list):
+                return [o.strip() for o in parsed if o.strip()]
+        except (json.JSONDecodeError, ValueError):
+            pass
+        # Fallback: comma-separated
+        return [o.strip() for o in raw.split(",") if o.strip()]
 
     @property
     def cashfree_base_url(self) -> str:

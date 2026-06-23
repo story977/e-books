@@ -135,16 +135,18 @@ export default function AdminBooksPage() {
                     </Button>
                   </Link>
                   <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="rounded-lg h-7 px-2.5 text-xs"
-                        id={`delete-book-${book.id}`}
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </AlertDialogTrigger>
+                    <AlertDialogTrigger
+                      render={
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="rounded-lg h-7 px-2.5 text-xs"
+                          id={`delete-book-${book.id}`}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      }
+                    />
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Book</AlertDialogTitle>

@@ -20,28 +20,28 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Support",
-    value: "support@ebookstore.com",
+    value: "srik13225@gmail.com",
     desc: "We respond within 24 hours",
-    href: "mailto:support@ebookstore.com",
+    href: "mailto:srik13225@gmail.com",
   },
   {
     icon: Phone,
     title: "Phone",
-    value: "+91 98765 43210",
+    value: "+91 63803 94753",
     desc: "Mon–Fri, 9 AM – 6 PM IST",
-    href: "tel:+919876543210",
+    href: "tel:+916380394753",
   },
   {
     icon: MapPin,
     title: "Location",
-    value: "Chennai, Tamil Nadu",
+    value: "Salem, Tamil Nadu",
     desc: "India",
     href: "#",
   },
   {
     icon: Clock,
     title: "Response Time",
-    value: "< 24 hours",
+    value: "< 24 hours",  
     desc: "Average response time",
     href: "#",
   },
@@ -102,7 +102,7 @@ export default function ContactPage() {
                     with your purchase, email us with your order ID and we&apos;ll
                     sort it out quickly.
                   </p>
-                  <a href="mailto:support@ebookstore.com">
+                  <a href="mailto:srik13225@gmail.com">
                     <Button variant="outline" size="sm" className="rounded-lg">
                       <Mail className="w-3.5 h-3.5 mr-1.5" />
                       Email Support
