@@ -107,6 +107,20 @@ export function Footer() {
             <span className="font-semibold text-primary">Cloudinary</span>
           </div>
         </div>
+
+        <div className="mt-6 flex justify-center items-center gap-1.5 text-xs text-muted-foreground/60">
+          <span>Made with</span>
+          <span className="text-red-400">♥</span>
+          <span>by</span>
+          <a
+            href="https://nodekraft.tech/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary/70 hover:text-primary transition-colors hover:underline underline-offset-2"
+          >
+            NodeKraft
+          </a>
+        </div>
       </div>
     </footer>
   );
