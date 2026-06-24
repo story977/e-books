@@ -22,6 +22,11 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Always server-render on demand — never serve a stale pre-built page
+export const dynamic = "force-dynamic";
+// Allow slugs not in generateStaticParams (new books added after last deploy)
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   try {
     const data = await fetchBooks({ limit: 50 });
