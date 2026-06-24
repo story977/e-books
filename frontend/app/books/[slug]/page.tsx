@@ -62,8 +62,11 @@ export default async function BookDetailPage({ params }: Props) {
   let book: Book;
   try {
     book = await fetchBook(slug);
-  } catch {
-    notFound();
+  } catch (error: any) {
+    if (error?.status === 404) {
+      notFound();
+    }
+    throw error;
   }
 
   const formattedPrice = new Intl.NumberFormat("en-IN", {
