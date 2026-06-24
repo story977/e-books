@@ -49,6 +49,9 @@ const faqs = [
   },
 ];
 
+// Force dynamic rendering — always fetch fresh books at request time, never statically bake empty data
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   // Fetch featured books (latest 8)
   let featuredBooks: import("@/types").Book[] = [];

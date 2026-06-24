@@ -4,6 +4,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BooksPageContent } from "@/components/books/BooksPageContent";
 
+// Force dynamic rendering — always fetch fresh books at request time
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "All Books",
   description:
