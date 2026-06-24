@@ -61,21 +61,31 @@ function CheckoutContent() {
     }
   }, [bookId, router]);
 
-  // Load Cashfree SDK v3
-  useEffect(() => {
-    const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "sandbox";
-    const sdkUrl = env === "production"
-      ? "https://sdk.cashfree.com/js/v3/cashfree.js"
-      : "https://sdk.cashfree.com/js/v3/cashfree.js"; // same URL, mode differs at runtime
-
-    if (!document.getElementById("cashfree-sdk")) {
+  // Load Cashfree SDK v3 — returns a Promise that resolves when SDK is ready
+  const loadCashfreeSDK = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      // Already loaded
+      if ((window as any).Cashfree) {
+        resolve();
+        return;
+      }
+      // Script already injected — wait for it
+      const existing = document.getElementById("cashfree-sdk");
+      if (existing) {
+        existing.addEventListener("load", () => resolve());
+        existing.addEventListener("error", () => reject(new Error("Cashfree SDK failed to load")));
+        return;
+      }
+      // Inject script fresh
       const script = document.createElement("script");
       script.id = "cashfree-sdk";
-      script.src = sdkUrl;
+      script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
       script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Cashfree SDK failed to load. Check your connection."));
       document.body.appendChild(script);
-    }
-  }, []);
+    });
+  };
 
   const onSubmit = async (data: FormData) => {
     if (!bookId) return;
@@ -89,10 +99,12 @@ function CheckoutContent() {
         buyer_phone: data.buyer_phone,
       });
 
-      // Initialize Cashfree SDK v3
+      // Wait for Cashfree SDK to be fully loaded before proceeding
+      await loadCashfreeSDK();
+
       const CashfreeSDK = (window as any).Cashfree;
       if (!CashfreeSDK) {
-        throw new Error("Cashfree SDK not loaded. Please refresh the page.");
+        throw new Error("Cashfree SDK not available. Please refresh the page.");
       }
 
       const env = process.env.NEXT_PUBLIC_CASHFREE_ENV || "sandbox";
@@ -100,14 +112,12 @@ function CheckoutContent() {
 
       const result = await cashfree.checkout({
         paymentSessionId: orderResult.payment_session_id,
-        redirectTarget: "_self", // redirect in the same tab
+        redirectTarget: "_self",
       });
 
       if (result?.error) {
         throw new Error(result.error.message || "Payment failed. Please try again.");
       }
-      // If redirect happened, this code won't execute.
-      // On return from Cashfree, the return_url (payment-success) handles verification.
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Failed to initiate payment");
       setLoading(false);
