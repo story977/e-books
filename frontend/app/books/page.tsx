@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     description: "Find your next favourite digital book. Programming, Business, Self-Help and more.",
   },
 };
+// main function
 
 export default function BooksPage() {
   return (
