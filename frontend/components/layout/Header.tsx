@@ -51,14 +51,14 @@ export function Header() {
             <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-border transition-transform group-hover:scale-105">
               <Image
                 src="/logo.png"
-                alt="eBook Store Logo"
+                alt="Storytime With Sri Logo"
                 fill
                 sizes="48px"
                 className="object-cover"
                 priority
               />
             </div>
-            <span className="text-gradient hidden sm:block">eBook Store</span>
+            <span className="text-gradient hidden sm:block">Storytime With Sri</span>
           </Link>
 
           {/* Desktop Nav */}

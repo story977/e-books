@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Browse our complete collection of premium digital eBooks. Filter by category, search by title or author. Instant download after purchase.",
   openGraph: {
-    title: "Browse All eBooks | eBook Store",
+    title: "Browse All eBooks | Storytime With Sri",
     description: "Find your next favourite digital book. Programming, Business, Self-Help and more.",
   },
 };

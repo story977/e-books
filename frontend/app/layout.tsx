@@ -15,8 +15,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://yourebookstore.com"
   ),
   title: {
-    default: "eBook Store — Premium Digital Books",
-    template: "%s | eBook Store",
+    default: "Storytime With Sri — Premium Digital Books",
+    template: "%s | Storytime With Sri",
   },
   description:
     "Discover and instantly download premium digital eBooks on programming, self-help, business, and more. Secure payment & instant delivery.",
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     "pdf books",
     "instant download",
   ],
-  authors: [{ name: "eBook Store" }],
-  creator: "eBook Store",
+  authors: [{ name: "Storytime With Sri" }],
+  creator: "Storytime With Sri",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "eBook Store",
-    title: "eBook Store — Premium Digital Books",
+    siteName: "Storytime With Sri",
+    title: "Storytime With Sri — Premium Digital Books",
     description:
       "Discover and instantly download premium digital eBooks on programming, self-help, business, and more.",
     images: [
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "eBook Store",
+        alt: "Storytime With Sri",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "eBook Store — Premium Digital Books",
+    title: "Storytime With Sri — Premium Digital Books",
     description: "Buy and download premium digital eBooks instantly.",
     images: ["/og-image.png"],
   },

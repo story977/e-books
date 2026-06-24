@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: book.title,
       description: book.description.slice(0, 160),
       openGraph: {
-        title: `${book.title} by ${book.author} | eBook Store`,
+        title: `${book.title} by ${book.author} | Storytime With Sri`,
         description: book.description.slice(0, 160),
         images: [{ url: book.cover_url, width: 800, height: 1100, alt: book.title }],
         type: "website",
@@ -99,7 +99,7 @@ export default async function BookDetailPage({ params }: Props) {
           price: book.price,
           priceCurrency: "INR",
           availability: "https://schema.org/InStock",
-          seller: { "@type": "Organization", name: "eBook Store" },
+          seller: { "@type": "Organization", name: "Storytime With Sri" },
         },
       },
       {
@@ -107,7 +107,7 @@ export default async function BookDetailPage({ params }: Props) {
         name: book.title,
         description: book.description,
         image: book.cover_url,
-        brand: { "@type": "Brand", name: "eBook Store" },
+        brand: { "@type": "Brand", name: "Storytime With Sri" },
         offers: {
           "@type": "Offer",
           price: book.price,

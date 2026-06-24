@@ -1,5 +1,5 @@
 // =============================================================================
-// Shared TypeScript Types for eBook Store
+// Shared TypeScript Types for Storytime With Sri
 // =============================================================================
 
 export interface Book {

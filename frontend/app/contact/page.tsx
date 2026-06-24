@@ -8,7 +8,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with eBook Store support team. We're here to help with any questions about purchases, downloads, or technical issues.",
+    "Get in touch with Storytime With Sri support team. We're here to help with any questions about purchases, downloads, or technical issues.",
 };
 
 const contactInfo = [

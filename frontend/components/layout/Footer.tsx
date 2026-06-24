@@ -30,13 +30,13 @@ export function Footer() {
               <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-border">
                 <Image
                   src="/logo.png"
-                  alt="eBook Store Logo"
+                  alt="Storytime With Sri Logo"
                   fill
                   sizes="36px"
                   className="object-cover"
                 />
               </div>
-              <span className="text-gradient">eBook Store</span>
+              <span className="text-gradient">Storytime With Sri</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
               Your portal to worlds unknown. Escape reality, unlock epic tales instantly, and carry a thousand lifetimes in your pocket — anywhere, anytime
@@ -98,7 +98,7 @@ export function Footer() {
         <Separator className="my-10" />
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} eBook Store. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Storytime With Sri. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <span>Payments secured by</span>
             <span className="font-semibold text-primary">Cashfree</span>

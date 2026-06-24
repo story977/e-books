@@ -17,7 +17,7 @@ import { BookCard } from "@/components/books/BookCard";
 import { fetchBooks } from "@/lib/api";
 
 export const metadata: Metadata = {
-  title: "eBook Store — Premium Digital Books",
+  title: "Storytime With Sri — Premium Digital Books",
   description:
     "Discover and instantly download premium digital eBooks on programming, self-help, business, science and more. Secure payment via Cashfree. Instant PDF delivery.",
 };
@@ -189,7 +189,7 @@ export default async function HomePage() {
            ======================================================== */}
         {/* <section className="py-20 container-max section-padding">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold mb-3">Why Choose eBook Store?</h2>
+            <h2 className="text-3xl font-bold mb-3">Why Choose Storytime With Sri?</h2>
             <p className="text-muted-foreground max-w-lg mx-auto">
               We make buying and reading digital books effortless and secure
             </p>

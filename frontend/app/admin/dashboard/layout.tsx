@@ -74,14 +74,14 @@ export default function AdminLayout({
             <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-border">
               <Image
                 src="/logo.png"
-                alt="eBook Store Logo"
+                alt="Storytime With Sri Logo"
                 fill
                 sizes="36px"
                 className="object-cover"
               />
             </div>
             <div>
-              <div className="font-bold text-sm text-gradient">eBook Store</div>
+              <div className="font-bold text-sm text-gradient">Storytime With Sri</div>
               <div className="text-xs text-muted-foreground">Admin Panel</div>
             </div>
           </div>

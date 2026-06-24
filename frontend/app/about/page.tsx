@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Learn about eBook Store — our mission to make premium digital knowledge accessible to everyone in India.",
+    "Learn about Storytime With Sri — our mission to make premium digital knowledge accessible to everyone in India.",
 };
 
 const values = [
@@ -55,10 +55,10 @@ export default function AboutPage() {
               Kutty Story
             </Badge>
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-              About StorytimewithSri
+              About Storytime With Sri
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              We started [StorytimewithSri] with a simple mission: to make unforgettable stories affordable and accessible to every dreamer in India. No subscriptions. No hidden fees. Just pure escape, one great book at a time.
+              We started Storytime With Sri with a simple mission: to make unforgettable stories affordable and accessible to every dreamer in India. No subscriptions. No hidden fees. Just pure escape, one great book at a time.
             </p>
           </div>
         </section>
@@ -78,7 +78,7 @@ export default function AboutPage() {
                   Finding great fictional stories online in India was frustrating — expensive monthly subscriptions, endless pop-ups, or platforms cluttered with textbooks and self-help guides. We wanted a place dedicated entirely to the magic of storytelling, without the hassle.
                 </p>
                 <p>
-                  StorytimewithSri is a single-vendor platform where you can browse, buy, and instantly dive into gripping fictional worlds. No account creation required, no monthly subscriptions — just pay and read.
+                  Storytime With Sri is a single-vendor platform where you can browse, buy, and instantly dive into gripping fictional worlds. No account creation required, no monthly subscriptions — just pay and read.
                 </p>
                 <p>
                   Every story in our collection is carefully curated to give you the ultimate literary escape. The moment you purchase, you get a secure, instant PDF download to start your next binge-reading session right away.

@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
           <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-border mx-auto mb-4 glow">
             <Image
               src="/logo.png"
-              alt="eBook Store Logo"
+              alt="Storytime With Sri Logo"
               fill
               sizes="64px"
               className="object-cover"
@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
           </div>
           <CardTitle className="text-2xl">Admin Login</CardTitle>
           <p className="text-sm text-muted-foreground">
-            eBook Store Management Panel
+            Storytime With Sri Management Panel
           </p>
         </CardHeader>
         <CardContent>
